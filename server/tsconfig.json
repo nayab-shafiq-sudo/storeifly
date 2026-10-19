@@ -12,7 +12,7 @@
     },
     "include": [
         "./**/*.ts"
-    ],
+, "config/prisma.js"    ],
     "exclude": [
         "node_modules"
     ]
