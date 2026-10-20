@@ -37,7 +37,7 @@ export const getCategories = async (req:Request, res:Response):Promise<void> => 
         res.json({success: true, categories})
     } catch (error:any) {
         console.error("getCategories error:", error);
-        res.status(500).json({success: false, message: error?.message || "Failed to fetcg categories"})
+        res.status(500).json({success: false, message: "Failed to fetcg categories"})
     }
 }
 
@@ -49,7 +49,7 @@ export const createCategories = async (req:AuthenticatedRequest, res:Response):P
             return;
         }
         const {name} = req.body
-        if(!name?.trim()){
+        if(typeof name !== "string" || !name.trim()){
             res.status(400).json({ success: false, message: "Category name is required" })
             return;
         }
@@ -62,7 +62,7 @@ export const createCategories = async (req:AuthenticatedRequest, res:Response):P
 
     } catch (error:any) {
         console.error("getCategories error:", error);
-        res.status(500).json({success: false, message: error?.message || "Failed to create categories"})
+        res.status(500).json({success: false, message: "Failed to create categories"})
     }
 }
 
@@ -75,6 +75,6 @@ export const deleteCategories = async (req:AuthenticatedRequest, res:Response):P
         await prisma.categories.deleteMany({where: {id: Number(req.params.id), store_id: store.id}})
     } catch (error:any) {
         console.error("getCategories error:", error);
-        res.status(500).json({success: false, message: error?.message || "Failed to delete categories"})
+        res.status(500).json({success: false, message: "Failed to delete categories"})
     }
 }
