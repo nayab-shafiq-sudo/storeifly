@@ -56,7 +56,7 @@ export const verifyAuthToken = async (token: string): Promise<AuthUser | null> =
         const store = await prisma.stores.findFirst({where: {merchant_id: efectiveId}})
 
             let role: "admin" | "merchant" | "customer" = "customer";
-            if (u?.role === "admin" || payload.role === "admin" || efectiveEmail.includes("admin@")){
+            if (u?.role === "admin" || payload.role === "admin" ){
                 role = "admin";
             } else if (store || u?.role === "merchant" || payload.role === "merchant") {
                 role = "merchant";
@@ -108,7 +108,7 @@ export const optionalAuth = async (req: AuthenticatedRequest, res: Response, nex
 }
 
 
-export const requireRole = async (roles: Array<"admin" | "merchant" | "customer">) => {
+export const requireRole = (roles: Array<"admin" | "merchant" | "customer">) => {
     return (req: AuthenticatedRequest, res: Response, next: NextFunction): void=> {
         if (!req.user || !roles.includes(req.user.role)){
             res.status(403).json({success: false, message: "Forbidden: Access denied"})
