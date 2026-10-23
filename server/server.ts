@@ -4,6 +4,7 @@ import cors from 'cors'
 import CategoryRouter from './routes/categoryRoutes.js'
 import uploadRouter from './routes/uploadRoutes.js'
 import storeRouter from './routes/storeRoutes.js'
+import productRouter from './routes/productRoutes.js'
 
 
 const app = express()
@@ -23,6 +24,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/categories', CategoryRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/stores', storeRouter);
+app.use('/api/products', productRouter);
 
 
 
