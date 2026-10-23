@@ -3,6 +3,7 @@ import express, {  Request, Response } from 'express'
 import cors from 'cors'
 import CategoryRouter from './routes/categoryRoutes.js'
 import uploadRouter from './routes/uploadRoutes.js'
+import storeRouter from './routes/storeRoutes.js'
 
 
 const app = express()
@@ -19,9 +20,9 @@ const PORT = process.env.PORT || 3000;
 app.get('/', (req: Request, res: Response) => {
     res.send('Server is Live')
 })
-app.use('/api/categories', CategoryRouter)
-app.use('/api/upload', uploadRouter)
-
+app.use('/api/categories', CategoryRouter);
+app.use('/api/upload', uploadRouter);
+app.use('/api/stores', storeRouter);
 
 
 
