@@ -190,7 +190,7 @@ export const getCustomerOrder = async (req:AuthenticatedRequest, res:Response):P
         const whereClause: any = {
             or: [
                 {customer_id: userId},
-                ...(userEmail ? [{customer_email: {equals: userEmail, node: "insensitive" as const}}] : []),
+                ...(userEmail ? [{customer_email: {equals: userEmail, mode: "insensitive" as const}}] : []),
             ]
         }
 
