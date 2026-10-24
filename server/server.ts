@@ -6,6 +6,7 @@ import uploadRouter from './routes/uploadRoutes.js'
 import storeRouter from './routes/storeRoutes.js'
 import productRouter from './routes/productRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
+import analyticsRouter from './routes/analyticsRoutes.js'
 
 
 const app = express()
@@ -27,6 +28,7 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/stores', storeRouter);
 app.use('/api/products', productRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/analytics', analyticsRouter);
 
 
 
