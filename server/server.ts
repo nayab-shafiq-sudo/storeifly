@@ -31,7 +31,6 @@ app.use('/api/orders', orderRouter);
 app.use('/api/analytics', analyticsRouter);
 
 
-
 app.listen(PORT, ()=> {
     console.log(`Server is running at http://localhost:${PORT}`)
 })
