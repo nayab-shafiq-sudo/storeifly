@@ -14,7 +14,7 @@ export function applyCloudinaryTransform(
 ):string {
     const transform = action === "bg-removal"
     ? "e_background_removal,f_auto,q_auto"
-    : `e_gen_recolor:prompt_${encodeURIComponent(options.prompt || "object")};to-color_${(options.toColor || "red").replace("#", "")}${options.multiple ? ";multiple_true" : ""}, f_auto,q_auto`;
+    : `e_gen_recolor:prompt_${encodeURIComponent(options.prompt || "object")};to-color_${(options.toColor || "red").replace("#", "")}${options.multiple ? ";multiple_true" : ""},f_auto,q_auto`;
 
     return url.replace("/image/upload/", `/image/upload/${transform}/`)
 }
@@ -144,18 +144,18 @@ export const genrateOnModelImage = async (params: GenrateOnModelParams):Promise<
     const targetPublicId = params.targetPublicId?.trim() || `tryOn/model_${Date.now()}`;
     const payload = {
         prompt: params.prompt,
-        refrence_images: [
+        reference_images: [
             {source_type: "url", url: params.modelImageUrl},
             {source_type: "url", url: params.productImageUrl}
         ],
-        model: {mode: "auto", ...(params.preference ? {prefrence: params.preference }: {})},
+        model: {mode: "auto", ...(params.preference ? {preference: params.preference }: {})},
         target: {target_type: "managed_asset", public_id: targetPublicId}
     };
     const response = await fetch(`https://api.cloudinary.com/v2/generate/${cloud_name}/image_to_image`, {
         method: "POST",
         headers: {
             Authorization: `Basic ${Buffer.from(`${api_key}:${api_secret}`).toString("base64")}`,
-            "content-Type": "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
     });

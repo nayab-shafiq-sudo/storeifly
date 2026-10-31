@@ -41,8 +41,8 @@ export const updateNeonUserRole = async (userId: string, role:string):Promise<vo
     try {
         await prisma.$executeRaw`
         UPDATE neon_auth.user
-        SET role = ${role}, "updateAt" = NOW()
-        WHERE id = ${userId}::uu AND (role IS NULL OR role != 'admin')
+        SET role = ${role}, "updatedAt" = NOW()
+        WHERE id = ${userId}::uuid AND (role IS NULL OR role != 'admin')
         `;
     } catch (error) {
         console.error(error)
@@ -90,7 +90,7 @@ export const countNeonMerchants = async ():Promise<number> => {
         const rows = await prisma.$queryRaw<Array<{count: BigInt}>>`
         SELECT COUNT(*) as count
         FROM neon_auth.user
-        WHERE role = 'merchant
+        WHERE role = 'merchant'
         `
 
         return Number(rows[0]?.count || 0)

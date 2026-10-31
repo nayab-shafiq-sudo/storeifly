@@ -16,8 +16,8 @@ export interface AuthenticatedRequest extends Request {
     user?: AuthUser;
 }
 
-const NEON_AUTH_BASE_UR = process.env.NEON_AUTH_BASE_UR;
-const NEON_AUTH_JWSK_URL = process.env.NEON_AUTH_JWSK_URL;
+const NEON_AUTH_BASE_URL = process.env.NEON_AUTH_BASE_URL;
+const NEON_AUTH_JWSK_URL = process.env.NEON_AUTH_JWKS_URL;
 
 let neonJWKS: ReturnType<typeof createRemoteJWKSet> | null = null;
 let neonIssuer = "";
@@ -26,8 +26,8 @@ try {
     if (NEON_AUTH_JWSK_URL){
         neonJWKS = createRemoteJWKSet(new URL(NEON_AUTH_JWSK_URL))
     }
-    if (NEON_AUTH_BASE_UR){
-        neonIssuer = new URL(NEON_AUTH_BASE_UR).origin;
+    if (NEON_AUTH_BASE_URL){
+        neonIssuer = new URL(NEON_AUTH_BASE_URL).origin;
     }
 } catch (error) {
     console.warn("Neon Auth JWSK initialization warnimg:", error);

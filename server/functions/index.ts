@@ -45,7 +45,7 @@ export default {
             timeStamp: new Date().toISOString()})
         }
         // featured slug
-        if (path === "/stores/public/featured" || path === "/stores/festured"){
+        if (path === "/stores/public/featured" || path === "/stores/featured"){
             const stores = await sql`
             SELECT id,name, slug, logo_url, banner_url, description, currency, created_at
             FROM stores
@@ -75,16 +75,16 @@ export default {
         }
 
         // product by ID
-        const productMatch = path.match(/^\products\/(\d+)$/);
+        const productMatch = path.match(/^\/products\/(\d+)$/);
         if (productMatch){
             const productId = Number(productMatch[1]);
             const [product] = await sql`
-            SELECT p.id, p.store_id, p.category_id, p.name, p.description, p.price, p.compare_at_price, p.sku, p.stock, p.images, p.varients, p.status, p.created_at,
+            SELECT p.id, p.store_id, p.category_id, p.name, p.description, p.price, p.compare_at_price, p.sku, p.stock, p.images, p.variants, p.status, p.created_at,
             c.name as category_name, c.slug as category_slug,
             s.name as store_name, s.slug as store_slug, s.status as store_status
         FROM products p
         LEFT JOIN categories c ON p.category_id = c.id
-        LEFT JOIN stores s ON p.store = s.id
+        LEFT JOIN stores s ON p.store_id = s.id
         WHERE p.id = ${productId}
         LIMIT 1
             `
@@ -99,7 +99,7 @@ export default {
             const status = searchParams.get("status") || null;
             const search = searchParams.get("search")?.trim() || null;
 
-            let targetStoreId = storeIdParam ? Number(storeSlug) : null;
+            let targetStoreId = storeIdParam ? Number(storeIdParam) : null;
             if (storeSlug){
                 const [store] = await sql`
                 SELECT id FROM stores WHERE slug = ${storeSlug} LIMIT 1
@@ -110,22 +110,22 @@ export default {
             }
 
             if(!targetStoreId){
-                return json({success: false, message: "storeId or storeSlug is required"},404);
+                return json({success: false, message: "storeId or storeSlug is required"},400);
             }
 
             const categoryId = categoryIdParam ? Number(categoryIdParam) : null;
             const products = await sql`
-            SELECT p.id, p.store_id, p.category_id, p.name, p.description, p.price, p.compare_at_price, p.sku, p.stock, p.images, p.varients, p.status, p.created_at,
+            SELECT p.id, p.store_id, p.category_id, p.name, p.description, p.price, p.compare_at_price, p.sku, p.stock, p.images, p.variants, p.status, p.created_at,
                 c.name as category_name, c.slug as category_slug
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
             WHERE p.store_id = ${targetStoreId}
                 AND (${status}::text IS NULL OR p.status = ${status})
-                AND (${categoryId}::int IS NULL OR p.category_Id = ${categoryId})
+                AND (${categoryId}::int IS NULL OR p.category_id = ${categoryId})
                 AND (${search}::text IS NULL OR (
-                    p.name ILIKE '%' || ${search} | '%'
-                    OR p.description ILIKE '%' || ${search} | '%'
-                    OR p.sku ILIKE '%' || ${search} | '%'
+                    p.name ILIKE '%' || ${search} || '%'
+                    OR p.description ILIKE '%' || ${search} || '%'
+                    OR p.sku ILIKE '%' || ${search} || '%'
 
                 ))
                     ORDER BY p.created_at DESC
@@ -135,7 +135,7 @@ export default {
         return json({success:false, message: "Route not found in neon public API"}, 404)
        } catch (error:any) {
             console.error("Neon public error:", error)
-            return json({success:false, message:"Internal server error"})
+            return json({success:false, message:"Internal server error"}, 500)
        }
     }
 }

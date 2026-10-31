@@ -7,7 +7,7 @@ const orderRouter = Router()
 
 // PUBLIC CHECKOUT & RECEPIT
 orderRouter.post('/checkout' , optionalAuth, createOrder)
-orderRouter.get('/receipt/:orderIdentifire' , getOrderReceipt)
+orderRouter.get('/receipt/:orderIdentifier' , getOrderReceipt)
 
 // CUSTOMER ORDER HISTORY
 orderRouter.get('/customer/my-orders', requireAuth, getCustomerOrder)
