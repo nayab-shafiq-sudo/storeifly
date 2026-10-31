@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
 import { MerchantLayout } from "../../components/MerchantLayout";
 import { Plus, Trash2, FolderTree } from "lucide-react";
 import { Spinner } from "../../components/common/Spinner";
@@ -7,7 +6,6 @@ import toast from "react-hot-toast";
 import { api } from "../../config/api";
 
 export const CategoriesPage: React.FC = () => {
-    const { store } = useAuth();
     const [categories, setCategories] = useState<any[]>([]);
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(true);
