@@ -8,12 +8,12 @@ const storeRouter = Router()
 storeRouter.post('/', requireAuth, createStore)
 storeRouter.post('/onboard-merchant', requireAuth, onboardMerchant)
 storeRouter.get('/me', requireAuth, getMyStore)
-storeRouter.get('/me', requireAuth, updateMyStore)
+storeRouter.put('/me', requireAuth, updateMyStore)
 
 //ADMIN ROUTES
 storeRouter.get('/admin/all', requireAuth, requireRole(["admin"]), getAllStores)
 storeRouter.get('/admin/merchants', requireAuth, requireRole(["admin"]), getAllMerchants)
-storeRouter.get('/admin/:storeId/status', requireAuth, requireRole(["admin"]), toggleStoreStatus)
+storeRouter.patch('/admin/:storeId/status', requireAuth, requireRole(["admin"]), toggleStoreStatus)
 
 
 

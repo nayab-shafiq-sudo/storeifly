@@ -188,7 +188,7 @@ export const getCustomerOrder = async (req:AuthenticatedRequest, res:Response):P
         const targetStore = storeSlug ? await findStore({slug: String(storeSlug)}) : storeId ? await findStore({id: Number(storeId)}) : null;
 
         const whereClause: any = {
-            or: [
+            OR: [
                 {customer_id: userId},
                 ...(userEmail ? [{customer_email: {equals: userEmail, mode: "insensitive" as const}}] : []),
             ]

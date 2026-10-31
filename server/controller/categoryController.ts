@@ -72,7 +72,18 @@ export const deleteCategories = async (req:AuthenticatedRequest, res:Response):P
         if (!store) { res.status(404).json({success: false, message: "Store not found"})
             return;
         }
-        await prisma.categories.deleteMany({where: {id: Number(req.params.id), store_id: store.id}})
+        // await prisma.categories.deleteMany({where: {id: Number(req.params.id), store_id: store.id}})
+        const result = await prisma.categories.deleteMany({
+            where: { id: Number(req.params.id), store_id: store.id }
+        })
+
+        if (result.count === 0) {
+            res.status(404).json({ success: false, message: "Category not found" })
+            return;
+        }
+
+        res.json({ success: true, message: "Category deleted" })
+
     } catch (error:any) {
         console.error("getCategories error:", error);
         res.status(500).json({success: false, message: "Failed to delete categories"})

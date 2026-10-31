@@ -28,7 +28,7 @@ export const getMerchantAnalytics = async (req: AuthenticatedRequest, res:Respon
                 orderBy: {created_at: "desc"},
                 take: 5,
                 select: {
-                    id: true, order_number:true, customer_name:true, customer_email:true, total:true, order_status:true, created_at:true
+                    id: true, order_number:true, customer_name:true, customer_email:true, total:true, order_status:true, payment_status: true, created_at:true
                 }
             })
         ])
@@ -85,6 +85,7 @@ export const getPlatformAnalytics = async (req: AuthenticatedRequest, res:Respon
             revenue: s.orders.reduce((sum,o) => sum + Number(o.total), 0),
         })).sort((a,b) => b.revenue - a.revenue).slice(0,5)
 
+        
         res.json({
             success:true,
             analytics: {
